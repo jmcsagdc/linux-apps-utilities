@@ -3,5 +3,6 @@ def formatted_bin(num):
     return temp
 
 def turn_on(status_code, place):
-    temp=status_code ^| place
+    temp=status_code
+    temp|= 1 << place
     return temp
