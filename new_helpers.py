@@ -2,7 +2,7 @@ def formatted_bin(num):
     temp=bin(num)[2:].zfill(8)
     return temp
 
-def turn_on(status_code, place):
+def turn_on_vector(status_code, place):
     temp=status_code
     temp|= 1 << place
     return temp
