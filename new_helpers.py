@@ -6,3 +6,7 @@ def turn_on(status_code, place):
     temp=status_code
     temp|= 1 << place
     return temp
+
+def test_vector(status_code, place):
+    temp=(int(status_code) >> place) & 1
+    return temp
