@@ -6,7 +6,7 @@
 # For exaample, DOCKER runs as root and GITHUB repos can
 # be made by anyone...so know your sources.
 ####################
-
+sudo apt-get install -y tree htop inetutils-traceroute
 
 ####################
 # SSH
@@ -56,16 +56,55 @@ docker pull ubuntu
 #        Full stack
 docker pull linode/lamp
 docker pull jasonmakescoolstuff/shakaplayer:latest
+docker pull jasonmakescoolstuff/pysql
 
 ####################
 # Python Stuff
 ####################
 sudo apt-get install -y python-pip
 sudo apt-get install -y python3-pip
+pip install tabulate
+pip install bs4
 
+#    SQL stuff:
+#        https://www.a2hosting.com/kb/developer-corner/mysql/connecting-to-mysql-using-python
+#        https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
+
+pip install mysql-connector-python
+
+#        TODO add mongodb: pymongo and postgres: Psycopg2 connectors
 
 ####################
-# Git
+# gcloud
+# From: https://medium.com/@nnilesh7756/how-to-install-and-configure-the-google-cloud-sdk-2fad4a7d3ed7
 ####################
 
+#    Create an environment variable for the correct distribution
+export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
 
+#    Add the Cloud SDK distribution URI as a package source
+echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+#    Import the Google Cloud Platform public key
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+#    Update the package list and install the Cloud SDK
+sudo apt-get update && sudo apt-get install google-cloud-sdk
+
+####################
+# Sublime Text
+####################
+
+#    Install the GPG key:
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+
+#    Ensure apt is set up to work with https sources:
+sudo apt-get install apt-transport-https
+
+#    Select the channel to use:
+#        Stable
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+
+#    install
+sudo apt-get update
+sudo apt-get install -y sublime-text
