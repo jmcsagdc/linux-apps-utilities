@@ -46,10 +46,22 @@ sudo usermod -aG docker ${USER}
 #   The next command is an opportunity to add scripted validation...for now, just no error is good
 docker info
 
+#    Suggested quick things to expedite using it when you need it: grab a few base images
+#        SQL servers
+docker pull mysql
+docker pull postgres
+#        Linux distos
+docker pull centos
+docker pull ubuntu
+#        Full stack
+docker pull linode/lamp
+docker pull jasonmakescoolstuff/shakaplayer:latest
+
 ####################
 # Python Stuff
 ####################
-
+sudo apt-get install -y python-pip
+sudo apt-get install -y python3-pip
 
 
 ####################
