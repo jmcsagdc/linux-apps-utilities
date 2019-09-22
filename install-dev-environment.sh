@@ -33,7 +33,7 @@ sudo apt-get install -y curl 2>&1 | tee -a /root/install.LOG
 
 echo "curl docker repo key" 2>&1 | tee -a /root/install.LOG
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - 2>&1 | tee -a /root/install.LOG
-echo "add repo key" 2>&1 | tee -a /root/install.LOG
+echo "add repo key...if you use Mint, you'll need to fix this" 2>&1 | tee -a /root/install.LOG
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" 2>&1 | tee -a /root/install.LOG
 echo "apt-get update" 2>&1 | tee -a /root/install.LOG
 sudo apt-get update
@@ -100,7 +100,7 @@ pip install mysql-connector-python 2>&1 | tee -a /root/install.LOG
 
 echo "Setting up gcloud google cloud service" 2>&1 | tee -a /root/install.LOG
 #    Create an environment variable for the correct distribution
-echo "export CLOUD_SDK_REPO environment variable" 2>&1 | tee -a /root/install.LOG
+echo "export CLOUD_SDK_REPO environment variable...if you use Mint, you'll need to fix this" 2>&1 | tee -a /root/install.LOG
 export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" 2>&1 | tee -a /root/install.LOG
 
 #    Add the Cloud SDK distribution URI as a package source
