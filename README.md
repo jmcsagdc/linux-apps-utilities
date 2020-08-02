@@ -15,7 +15,7 @@ details for scripting DevOps solutions for cloud servers.
 
 ## Installers
 
- * install-dev-environment.sh
+ * install-dev-environment.sh - 
  Provides a consistent environment for working. The installer
  adds various tools like docker. Read the source for full
  package install details.
