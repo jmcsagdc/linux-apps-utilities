@@ -12,3 +12,12 @@ matters when you have thousands of files to process.
 
 There are some things here to provide simple, on-instance
 details for scripting DevOps solutions for cloud servers.
+
+## Installers
+
+ * install-dev-environment.sh
+ Provides a consistent environment for working. The installer
+ adds various tools like docker. Read the source for full
+ package install details.
+ 
+ Installers generally drop an install.LOG into /root
