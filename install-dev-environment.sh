@@ -10,7 +10,9 @@ echo "sudo apt-get update" 2>&1 | tee -a /root/install.LOG
 sudo apt-get update
 echo "sudo apt-get install -y tree htop inetutils-traceroute" 2>&1 | tee -a /root/install.LOG
 sudo apt-get install -y tree htop inetutils-traceroute 2>&1 | tee /root/install.LOG
-
+### Debian missing the apt-add-repository from the software-properties-common package
+echo "sudo apt-get install software-properties-common" 2>&1 | tee -a /root/install.LOG
+sudo apt-get install -y software-properties-common 2>&1 | tee -a /root/install.LOG
 ####################
 # SSH
 ####################
