@@ -2,12 +2,13 @@
 
 import os
 
+sshKeyPath = "~/.ssh/amazon/my.pem"
 
 def getAmazonData():
     # AMZN EC2 INPUT
     # Get instance data by forking to os and doing a bash action
 
-    myFile=os.popen('aws ec2 describe-instances --query "Reservations[*].Instances[*].[KeyName, PublicIpAddress, PrivateIpAddress]" --output=text | grep myKey').read()
+    myFile=os.popen('aws ec2 describe-instances --query "Reservations[*].Instances[*].[KeyName, PublicIpAddress, PrivateIpAddress]" --output=text | grep myName').read()
 
     # Clean up data
 
@@ -15,7 +16,7 @@ def getAmazonData():
     mySanitizedList = []
 
     for i in range (0, len(myData)):
-        if "myKey" in myData[i]:
+        if "myName" in myData[i]:
             mySanitizedList.append((myData[i+1],myData[i+2]))
 
     # User selects to keep or omit instances from AMZN query
@@ -35,16 +36,16 @@ def getAmazonData():
 
 # Manually add instances by IP
 def getManualInstances():
-    myNumberOfInstances = raw_input("How many instances are you configuring?")
+    myNumberOfInstances = raw_input("How many instances are you configuring?\n>  ")
     manualInstanceList = []
     for i in range(0, int(myNumberOfInstances)):
-        myGlobalIp = raw_input("Global IP " + str(i+1) + ": ")
+        myGlobalIp = raw_input("\nGlobal IP " + str(i+1) + ": ")
         myLocalIp = raw_input("Local IP " + str(i+1) + ": ")
         manualInstanceList.append((myGlobalIp,myLocalIp))
     return manualInstanceList
 
 # User chooses Amazon, DO, or Manual
-userChoice = raw_input("Would you like to (1) read amazon instances or (2) manually enter IPs? ")
+userChoice = raw_input("Would you like to \n(1) read amazon instances\n(2) manually enter IPs?\n>  ")
 userChoice = str(userChoice)
 if userChoice == "1":
     myChosenInstances = getAmazonData()
@@ -55,7 +56,7 @@ else:
 # OUTPUT
 myYaml=""
 myLeader="""# set path to ssh private key so we can ssh into each node for provisioning
-ssh_key_path: /.ssh/amazon/myKey.pem
+ssh_key_path: """ + sshKeyPath + """
 
 # kubernetes_version is not required, if null rke uses latest
 kubernetes_version:
@@ -66,7 +67,7 @@ kubernetes_version:
 
 nodes:\n"""
 
-myProvider=raw_input("1 - Amazon\n2 - DigitalOcean\n")
+myProvider = raw_input("\n1 - Amazon\n2 - DigitalOcean\n>  ")
 if myProvider == "1":
     myUser = "ubuntu"
 elif myProvider == "2":
@@ -99,7 +100,8 @@ for each in myChosenInstances:
 
     # Build ssh command
 
-    sshLine="ssh ubuntu@" + each[0] + " -oStrictHostKeyChecking=no -i ~/.ssh/amazon/jason-922.pem "
+    
+    sshLine="ssh ubuntu@" + each[0] + " -oStrictHostKeyChecking=no -i " + sshKeyPath
 
     # print simple ssh line
     print "\n****  SSH to " + each[0] + "   ***\n"
@@ -107,19 +109,33 @@ for each in myChosenInstances:
 
     # Build the Docker install line
     print "\n****  Docker install line for " + each[0] + "   ***\n"
-    dockerLine = sshLine + "'curl https://releases.rancher.com/install-docker/20.10.sh | sh && sudo usermod -aG docker ubuntu'"
+    dockerLine = sshLine + " 'curl https://releases.rancher.com/install-docker/20.10.sh | sh && sudo usermod -aG docker " + myUser + "'"
     print dockerLine
 
 
     # Build hardening lines
-    print "\n****  HARDEN " + each[0] + "   ***\n"
-    hardenLine=sshLine
-    hardenLine+="'sudo groupadd --gid 52034 etcd && sudo useradd --uid 52034 --gid 52034 etcd'"
-    print hardenLine + "\n\n"
+    print "\n****  HARDEN 1 " + each[0] + "   ***\n"
+    hardenLine = sshLine
+    hardenLine += " 'sudo groupadd --gid 52034 etcd && sudo useradd --uid 52034 --gid 52034 etcd'"
+    print hardenLine
+
+    print "\n****  HARDEN 2 " + each[0] + "   ***\n"
+    # Harden by adding new kubelet conf
+    hardenLine = "scp -oStrictHostKeyChecking=no -i " + sshKeyPath + " 90-kubelet.conf " + myUser + "@" + each[0] + ":~/."
+    print hardenLine
+
+    print "\n****  HARDEN 3 " + each[0] + "   ***\n"
+    # Move kubelet conf to proper location
+    hardenLine = "ssh " + myUser + "@" + each[0] + " -oStrictHostKeyChecking=no -i " 
+    hardenLine += sshKeyPath + " -c 'sudo cp ~/90-kubelet.conf /etc/sysctl.d/.'"
+    print hardenLine
+
 
 # Output the constructed yaml file #TODO: just make the file.
 print "\n\n############################ config.yaml ############################\n\n"
 print myYaml
+
+
 
 # python history
 
