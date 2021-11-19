@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Useful alias: alias dcls='docker container ls | awk "{ print \$1,  \$2 }"'
+# Useful cleanup to get rid of EVERYTHING: docker container rm $(docker container ls -a | awk "{ print \$1 }")
 
 # Note that the non-linear progression of port numbers skips commonly used ports
 # SEE: https://web.mit.edu/rhel-doc/4/RH-DOCS/rhel-sg-en-4/ch-ports.html
