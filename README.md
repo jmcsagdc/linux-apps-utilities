@@ -1,5 +1,7 @@
 # linux-apps-utilities
 
+TinyURL: https://tinyurl.com/thewreckingcrew100
+
 ## Purpose
 
 These are simple tools for tasks I find annoying and repetetive.
