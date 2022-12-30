@@ -1,4 +1,4 @@
 # Simple and clean thing to get only filename and human-readable size
-# Place in /sur/bin and chmod +x it
+# Place in /usr/bin and chmod +x it
 
 ls -lh | awk '{ print $9 "  " $5 }'
