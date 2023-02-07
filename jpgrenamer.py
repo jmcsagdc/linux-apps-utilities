@@ -4,7 +4,7 @@ import os
 
 directory = '.'
 
-print("I only do jpgs in the current working directory!)
+print("I only do jpgs in the current working directory!")
 
 myString = input("new filename base: ")
 
