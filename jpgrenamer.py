@@ -5,6 +5,7 @@ import os
 directory = '.'
 
 print("I only do jpgs in the current working directory!")
+print("Current working directory: "+os.getcwd())
 
 myString = input("new filename base: ")
 
